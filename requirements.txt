@@ -1,0 +1,33 @@
+# HaorFloodAlert — Python dependencies
+# Install with: pip install -r requirements.txt
+# Tested on Python 3.11
+
+# Web framework
+streamlit>=1.35.0
+
+# Machine learning
+scikit-learn>=1.4.0
+xgboost>=2.0.0
+joblib>=1.3.0
+
+# Deep learning
+torch>=2.2.0
+
+# Data
+numpy>=1.26.0
+pandas>=2.2.0
+
+# Visualisation
+matplotlib>=3.8.0
+plotly>=5.20.0
+folium>=0.16.0
+streamlit-folium>=0.18.0
+
+# HTTP / APIs
+requests>=2.31.0
+
+# Google Earth Engine
+earthengine-api>=0.1.390
+
+# Geospatial
+scipy>=1.12.0
