@@ -35,7 +35,7 @@ HaorFloodAlert is a machine-learning flood prediction system designed specifical
 
 | Split | Accuracy | Recall | AUC-ROC | F1 |
 |-------|----------|--------|---------|-----|
-| LOOCV — 77 real-SAR events (primary) | **89.6%** | 87.5% | 93.4% | 85.3% |
+| LOOCV — 77 real-SAR events (primary) | **89.6%** | 87.5% | 94.3%| 86.2%|
 | Hold-out — 45 events, 5-seed mean | 86.7% | — | — | — |
 
 > LSTM component (weight 0.20) trains on synthetic sequences and is excluded
@@ -47,7 +47,7 @@ HaorFloodAlert is a machine-learning flood prediction system designed specifical
 ## Architecture
 
 ```
-Input (13 features)
+Input (11 active features)
     Sentinel-1 VV/VH/ratio  |  NDWI  |  rainfall  |  soil moisture
     temp_anomaly  |  wind  |  slope  |  TWI  |  upstream_vv
     forecast_rain_next_12h  |  forecast_rain_72h
@@ -127,7 +127,7 @@ HaorFloodAlert/
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/yourusername/HaorFloodAlert.git
+git clone https://github.com/shkoli/HaorFloodAlert.git
 cd HaorFloodAlert
 pip install -r requirements.txt
 ```
