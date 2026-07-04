@@ -1,0 +1,20 @@
+# Secrets — never commit
+.env
+alert_settings.json
+
+# Claude Code local settings (not part of the public project)
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large raw rasters / GEE exports (not needed to reproduce paper numbers)
+*.tif
+*.tiff
+*.geotiff
