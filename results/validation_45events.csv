@@ -1,0 +1,46 @@
+Date,Season,Event Type,Actual,Predicted,Flood Prob,VV (dB),NDWI,TWI,Upstream VV,Upstream Alert,Rainfall (mm),Soil (%),Hard Case,Note,API,Correct
+2017-05-10,Pre-monsoon (Mar–May),classic,FLOOD,FLOOD,0.639,-21.1,0.267,17.2,-19.0,⚠️ Yes,78.8,51.3,,,✅,✅
+2017-06-01,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.583,-19.9,0.295,17.2,-20.2,⚠️ Yes,184.6,52.9,,,✅,✅
+2017-07-15,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.6,-20.8,0.328,17.2,-20.0,⚠️ Yes,176.2,52.1,,,✅,✅
+2017-08-10,Monsoon (Jun–Sep),residual,FLOOD,FLOOD,0.589,-19.0,0.174,17.2,-17.2,⚠️ Yes,134.3,39.1,,,✅,✅
+2018-04-15,Pre-monsoon (Mar–May),upstream ⚠️,FLOOD,FLOOD,0.796,-12.2,-0.11,17.2,-12.5,No,49.6,20.5,⚠️ Hard,"India gate release — local rain 22mm, SAR looks dry",✅,✅
+2018-05-20,Pre-monsoon (Mar–May),classic,FLOOD,FLOOD,0.677,-21.4,0.279,17.2,-19.8,⚠️ Yes,55.0,53.5,,,✅,✅
+2018-06-15,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.601,-20.9,0.287,17.2,-18.5,⚠️ Yes,164.8,52.2,,,✅,✅
+2018-07-10,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.613,-19.6,0.282,17.2,-20.4,⚠️ Yes,137.8,49.7,,,✅,✅
+2019-05-20,Pre-monsoon (Mar–May),upstream,FLOOD,FLOOD,0.734,-17.8,0.207,17.2,-20.7,⚠️ Yes,65.9,46.4,,,✅,✅
+2019-06-10,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.54,-21.5,0.337,17.2,-18.9,⚠️ Yes,193.7,54.7,,,✅,✅
+2019-07-05,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.616,-20.9,0.31,17.2,-19.7,⚠️ Yes,96.6,50.1,,,✅,✅
+2020-06-10,Monsoon (Jun–Sep),classic,FLOOD,DRY,0.292,-21.0,0.285,17.2,-20.4,⚠️ Yes,155.5,50.6,,,✅,❌
+2020-07-10,Monsoon (Jun–Sep),residual,FLOOD,FLOOD,0.627,-18.8,0.185,17.2,-17.1,⚠️ Yes,178.4,44.1,,,✅,✅
+2021-06-05,Monsoon (Jun–Sep),classic,FLOOD,DRY,0.294,-20.1,0.291,17.2,-19.3,⚠️ Yes,159.6,51.5,,,✅,❌
+2021-07-01,Monsoon (Jun–Sep),classic,FLOOD,FLOOD,0.559,-20.3,0.315,17.2,-18.8,⚠️ Yes,208.5,53.5,,,✅,✅
+2022-03-25,Pre-monsoon (Mar–May),upstream ⚠️,FLOOD,DRY,0.429,-13.8,-0.05,17.2,-14.0,No,14.6,25.0,⚠️ Hard,"Pre-monsoon upstream event, soil not yet saturated",✅,❌
+2022-04-20,Pre-monsoon (Mar–May),upstream,FLOOD,FLOOD,0.624,-17.8,0.136,17.2,-19.1,⚠️ Yes,90.3,41.2,,,✅,✅
+2022-05-15,Pre-monsoon (Mar–May),classic,FLOOD,DRY,0.253,-19.7,0.268,17.2,-20.4,⚠️ Yes,355.5,50.9,,,✅,❌
+2022-06-17,Monsoon (Jun–Sep),classic,FLOOD,DRY,0.29,-20.6,0.31,17.2,-20.3,⚠️ Yes,384.7,50.7,,,✅,❌
+2023-07-01,Monsoon (Jun–Sep),classic,FLOOD,DRY,0.292,-20.5,0.262,17.2,-19.8,⚠️ Yes,268.8,49.5,,,✅,❌
+2024-04-15,Pre-monsoon (Mar–May),upstream,FLOOD,DRY,0.291,-18.2,0.126,17.2,-21.6,⚠️ Yes,1.1,42.5,,,✅,❌
+2024-05-12,Pre-monsoon (Mar–May),classic,FLOOD,FLOOD,0.656,-21.1,0.263,17.2,-18.8,⚠️ Yes,77.8,52.0,,,✅,✅
+2024-06-01,Monsoon (Jun–Sep),classic,FLOOD,DRY,0.29,-20.1,0.296,17.2,-19.7,⚠️ Yes,366.1,53.5,,,✅,❌
+2017-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.001,-10.6,-0.251,17.2,-8.6,No,1.1,11.5,,,✅,✅
+2017-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.9,-0.242,17.2,-8.7,No,1.1,8.0,,,✅,✅
+2017-09-20,Monsoon (Jun–Sep),recovery ⚠️,DRY,FLOOD,0.625,-17.5,0.14,17.2,-16.2,⚠️ Yes,153.5,41.0,⚠️ Hard,"Residual saturation after monsoon, no active flooding",✅,❌
+2018-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.4,-0.226,17.2,-10.3,No,0.0,8.7,,,✅,✅
+2018-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.8,-0.279,17.2,-8.9,No,0.0,11.9,,,✅,✅
+2018-03-01,Pre-monsoon (Mar–May),clear,DRY,DRY,0.012,-10.0,-0.255,17.2,-9.3,No,15.4,8.5,,,✅,✅
+2018-09-20,Monsoon (Jun–Sep),false_alarm,DRY,FLOOD,0.847,-11.8,-0.193,17.2,-11.4,No,65.1,12.6,,,✅,❌
+2019-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.5,-0.272,17.2,-9.7,No,0.0,10.3,,,✅,✅
+2019-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.029,-10.6,-0.265,17.2,-9.9,No,0.1,9.1,,,✅,✅
+2019-09-10,Monsoon (Jun–Sep),recovery,DRY,DRY,0.209,-10.8,-0.184,17.2,-10.3,No,130.2,19.3,,,✅,✅
+2020-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.9,-0.243,17.2,-10.1,No,2.0,10.9,,,✅,✅
+2020-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.8,-0.259,17.2,-9.8,No,0.7,11.7,,,✅,✅
+2020-09-15,Monsoon (Jun–Sep),recovery,DRY,DRY,0.184,-10.5,-0.163,17.2,-11.9,No,114.4,14.9,,,✅,✅
+2021-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.6,-0.265,17.2,-8.7,No,0.0,9.4,,,✅,✅
+2021-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.5,-0.22,17.2,-10.1,No,0.0,10.9,,,✅,✅
+2022-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.007,-9.1,-0.234,17.2,-9.7,No,11.3,9.2,,,✅,✅
+2022-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.3,-0.255,17.2,-8.6,No,2.4,12.1,,,✅,✅
+2023-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-10.0,-0.229,17.2,-9.3,No,0.3,11.7,,,✅,✅
+2023-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.5,-0.252,17.2,-10.4,No,0.6,12.4,,,✅,✅
+2023-04-18,Pre-monsoon (Mar–May),false_alarm ⚠️,DRY,FLOOD,0.786,-15.8,0.05,17.2,-15.5,No,20.7,33.5,⚠️ Hard,"False alarm — border-zone rainfall, good drainage",✅,❌
+2024-01-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.7,-0.223,17.2,-10.5,No,0.0,12.0,,,✅,✅
+2024-02-15,Dry (Oct–Feb),clear,DRY,DRY,0.0,-9.1,-0.215,17.2,-9.7,No,0.0,7.9,,,✅,✅

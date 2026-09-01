@@ -1,0 +1,15 @@
+HaorFloodAlert - LSTM Training Report
+==================================================
+Data     : 101 rows, sorted by date
+Window   : 3 timesteps
+Eval     : Walk-Forward Validation (time-series correct)
+
+LSTM Only:
+  Accuracy : 69.2%
+  F1       : 64.7%
+  AUC-ROC  : 72.8%
+
+RF+XGB+LSTM Ensemble (RF=35%, XGB=35%, LSTM=30%):
+  Accuracy : 100.0%
+  F1       : 100.0%
+  AUC-ROC  : 100.0%

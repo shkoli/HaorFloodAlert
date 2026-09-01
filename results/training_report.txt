@@ -1,0 +1,14 @@
+HaorFloodAlert - Honest Training Report
+==================================================
+Dataset   : honest_training_data.csv
+Rows      : 72 verified observations (2017-2024)
+Label src : FFWC Annual Reports + Mondal et al.2021 + Bhuiyan et al.2024 + World Bank GRADE 2024
+Feature src: GEE (Sentinel-1, ERA5, Open-Meteo) — independent of labels
+Flood     : 32   Dry: 40
+
+Evaluation: LOOCV + 8x Gaussian augmentation
+  Accuracy  : 87.5%
+  Precision : 82.9%
+  Recall    : 90.6%
+  F1 Score  : 86.6%
+  AUC-ROC   : 89.4%

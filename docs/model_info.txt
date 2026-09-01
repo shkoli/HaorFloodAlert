@@ -1,0 +1,138 @@
+# HaorFloodAlert — Extracted Model Info
+==================================================
+Scanned from: C:\Users\Lenovo\HaorFloodAlert
+
+
+## 1. Key Lines from Python Files
+  [add_barak_discharge.py : line 28]
+  5. Compare new LOOCV accuracy with old (88.9%)
+  [app.py : line 17]
+  This system uses **13 satellite and meteorological features** — including Sentinel-1 SAR,
+  [app.py : line 18]
+  MODIS NDWI, ERA5 soil moisture, CHIRPS rainfall, upstream Barak river proxy, and
+  [app.py : line 20]
+  Sylhet-Sunamganj with an ensemble of Random Forest, XGBoost, and LSTM.
+  [app.py : line 23]
+  - Accuracy: 89.1% | F1: 87.9% | AUC-ROC: 94.6%
+  [app.py : line 32]
+  | Map | Real-time Sentinel-1 SAR water mask (Google Earth Engine) |
+  [app.py : line 35]
+  | Validation | Historical accuracy validation — 101 events, 2010-2024 |
+  [app.py : line 41]
+  - Upstream Barak river SAR proxy (India barrage release ~36h lead time)
+  [app.py : line 42]
+  - MODIS NDWI for cloud-robust water detection in monsoon season
+  [app.py : line 47]
+  **Data sources:** Google Earth Engine | Sentinel-1 SAR | MODIS | ERA5-Land |
+  [app.py : line 50]
+  **Models:** RF (500 trees) + XGBoost (500 est.) + LSTM ensemble |
+  [collect_honest_data.py : line 19]
+  SAR_SCALE, S2_SCALE, ERA5_SCALE, DEM_SCALE, DEFAULTS)
+  [collect_honest_data.py : line 99]
+  r   = img.reduceRegion(ee.Reducer.mean(), haor, SAR_SCALE)
+  [collect_honest_data.py : line 130]
+  f12 = round(sum(vals[-1:])/1*0.5, 1) if vals else DEFAULTS["forecast_rain_next_12h"]
+  [collect_honest_data.py : line 132]
+  return f12, f72
+  [collect_honest_data.py : line 144]
+  r = col.select("VV").median().reduceRegion(ee.Reducer.mean(),upstream,SAR_SCALE)
+  [collect_honest_data.py : line 155]
+  TWI_VAL = 17.185  # static terrain, same as before
+  [collect_honest_data.py : line 171]
+  f12, f72 = get_forecast(date_str)
+  [collect_honest_data.py : line 178]
+  "slope": SLOPE, "twi": TWI_VAL,
+  [collect_honest_data.py : line 179]
+  "forecast_rain_next_12h": f12,
+  [collect_honest_data.py : line 180]
+  "ndwi": DEFAULTS.get("ndwi", -0.1),
+  [collect_more_data.py : line 6]
+  - MODIS NDWI (less cloud problem than Sentinel-2)
+  [collect_more_data.py : line 16]
+  SAR_SCALE, ERA5_SCALE, DEFAULTS)
+  [collect_more_data.py : line 130]
+  r = img.reduceRegion(ee.Reducer.mean(),haor,SAR_SCALE)
+  [collect_more_data.py : line 152]
+  def get_modis_ndwi(start,end):
+  [collect_more_data.py : line 161]
+  .rename("ndwi")
+  [collect_more_data.py : line 163]
+  v = r.get("ndwi").getInfo()
+  [collect_more_data.py : line 166]
+  return DEFAULTS.get("ndwi",-0.1)
+  [collect_more_data.py : line 190]
+  v=col.select("VV").median().reduceRegion(ee.Reducer.mean(),upstream,SAR_SCALE).get("VV").getInfo()
+  [collect_more_data.py : line 203]
+  ndwi=get_modis_ndwi(start,end)
+
+## 2. Result Files Found
+  ✓ phones.csv
+    CSV file found
+  ✓ data\daily_validation_log.csv
+    CSV file found
+  ✓ data\honest_training_data.csv
+    CSV file found
+  ✓ data\honest_training_data_v2.csv
+    CSV file found
+  ✓ data\real_training_data_v2.csv
+    CSV file found
+  ✓ data\real_training_data_v3.csv
+    CSV file found
+  ✓ results\daily_report.csv
+    CSV file found
+  ✓ results\real_haor_validation.csv
+    CSV file found
+  ✓ results\real_haor_validation_full.csv
+    CSV file found
+  ✓ results\real_training_data.csv
+    CSV file found
+  ✓ results\validation_13features.csv
+    CSV file found
+  ✓ results\validation_45events.csv
+    CSV file found
+  ✓ models\active_features.pkl
+    Saved model file (.pkl)
+  ✓ models\lstm_scaler.pkl
+    Saved model file (.pkl)
+  ✓ models\lstm_window.pkl
+    Saved model file (.pkl)
+  ✓ models\rf_model.pkl
+    Saved model file (.pkl)
+  ✓ models\xgb_model.pkl
+    Saved model file (.pkl)
+
+## 3. Key Info from Markdown Files
+
+  [conference_paper.md]
+  # Deseasonalized Machine Learning Flood Prediction for Bangladesh Haor Wetlands Using Sentinel-1 SAR
+  Flash floods in the haor wetlands of Bangladesh destroy the annual *boro* rice harvest, threatening the food security of millions before the crop can be collected. Existing flood prediction systems are calibrated for riverine floods and do not address the distinct backwater-driven inundation dynamics of haor basins. This paper presents HaorFloodAlert, a deseasonalized machine learning ensemble for 72-hour flood probability forecasting in the Sunamganj Haor (~8,000 km²). We make four key contributions: (1) the identification and correction of a temperature seasonal confound that inflated reported accuracy by 6.9 percentage points (r = 0.570 before deconfounding, r = −0.031 after); (2) Otsu-threshold Sentinel-1 SAR change detection for cloud-independent flood mapping validated against three historical events; (3) an upstream Barak river SAR backscatter proxy at Silchar, Assam, providing ~36-hour lead time before haor inundation; and (4) the first publicly documented deseasonalized ML model specifically designed for haor flood prediction. The ensemble (Random Forest 45% + XGBoost 35% + LSTM 20%) achieves Leave-One-Out Cross-Validation accuracy of **89.6%**, Recall **87.5%**, F1-score **86.2%**, and AUC-ROC **0.943** (77 real-SAR subset) / **0.910** (full 101-event LOOCV) on Sentinel-1 SAR events (2014–2024). An independent 45-event hold-out yields **80.0%** accuracy. The system is deployed as a real-time Streamlit dashboard with Bengali-language SMS and email community alerts.
+  **Keywords:** flood prediction, haor, Bangladesh, Sentinel-1 SAR, machine learning, seasonal deconfounding, Random Forest, XGBoost, LSTM, upstream discharge proxy.
+  *Personal Motivation.* As a researcher from Sylhet, I grew up witnessing flash floods displace haor communities with no more than a few hours of warning. Families I knew lost entire harvests in single flood events while government forecasting systems—designed for the Brahmaputra and Meghna rivers—issued no specific haor alerts. The motivation for this research is personal: to build a system that gives the farmers of Sunamganj the hours they need to cut their crops, move their livestock, and protect their families. Every accuracy percentage point in this paper represents real lead time for real people.
+  The Flood Forecasting and Warning Centre (FFWC) of Bangladesh operates river-level monitoring at major gauge stations but provides no haor-specific inundation forecasts. Existing ML flood prediction studies in Bangladesh focus on riverine contexts using hydrological station data [1], [2]. No prior work has combined Sentinel-1 SAR change detection, upstream transboundary river monitoring, and deseasonalized feature engineering specifically for haor backwater dynamics.
+  A critical methodological flaw in prior haor-adjacent ML flood studies is the inclusion of raw air temperature as a model feature. Because floods occur during the warm monsoon season, temperature is a proxy for calendar time rather than a causal flood driver. We demonstrate that this inflates reported accuracy by up to 6.9 percentage points (Section V-C), and we correct it using monthly climatological anomaly deconfounding.
+  Section II reviews related work. Section III describes the study area and dataset. Section IV presents the methodology. Section V reports results. Sections VI–VIII discuss implications, limitations, and conclusions.
+  Early machine learning applications to Bangladesh flood prediction relied on station-based hydrological data from the Bangladesh Water Development Board (BWDB) [1]. Rajab et al. [3] compared Random Forest, XGBoost, and neural networks for riverine flood forecasting in Bangladesh, reporting AUC values of 0.81–0.89 on station gauge data, but without satellite remote sensing or haor-specific features.
+  **SAR-based flood mapping** has matured considerably since Sentinel-1's launch in 2014. Uddin et al. [4] demonstrated operational flood extent mapping using multi-temporal Sentinel-1 VV backscatter with Otsu thresholding, achieving 89% accuracy over Bangladeshi floodplains. Singha et al. [5] extended this to flood-impacted paddy rice mapping on Google Earth Engine, directly relevant to boro rice loss estimation. Both studies treat SAR flood mapping as a remote sensing task; neither integrates it with ML-based predictive forecasting.
+  **LSTM and deep learning** for flood forecasting have been applied globally [8] but face a critical limitation in haor contexts: insufficient time-series training data. Kratzert et al. [8] required 30+ years of continuous streamflow records for LSTM calibration. In the haor region, real Sentinel-1 time series are available only from 2014, and flood event labels are sparse and difficult to verify.
+  **Upstream transboundary river monitoring** is underexplored in Bangladeshi ML literature. The Barak river at Silchar, Assam, discharges into the Surma-Kushiyara system that feeds the Sunamganj haors, with a travel time of approximately 36 hours [9]. We operationalize this upstream signal as a SAR backscatter proxy using Google Earth Engine, a novel adaptation not present in prior work.
+  ## III. Study Area and Dataset
+  The primary study area is the Sunamganj Haor, centred at approximately 24.87°N, 91.45°E, bounded by [91.35°E, 24.75°N, 91.55°E, 25.00°N]. The haor complex covers ~8,000 km² of the greater Sylhet basin, including the Tanguar Haor Ramsar site and Hakaluki Haor. Terrain is characterised by extremely low relief (<3 m elevation variation within the bowl) and high Topographic Wetness Index values (TWI = 14–20 in the basin centre), making the area uniquely susceptible to backwater inundation.
+  ### B. Dataset Construction
+  Training data combines 101 real historical events from the existing honest training dataset with 30 additional FFWC-verified events added through expand_training_data.py, totalling **131 events** (60 flood, 71 dry) spanning 2009–2024. Event labels are sourced from FFWC Annual Reports, Islam et al. [7] historical records, and World Bank GRADE flood assessments.
+  **Data quality stratification:** Events are tagged as `real_sar` (post-2014, genuine Sentinel-1 extraction via Google Earth Engine) or `pre_sentinel1` (pre-2014, with physics-calibrated SAR proxies derived from published haor flood backscatter profiles). Primary accuracy metrics are computed exclusively on the 77 real-SAR events. The 131-event extended dataset is used as a supplementary training set.
+  ### A. Feature Engineering
+  **Table I** lists the 13 ML input features and 2 dashboard-only hydraulic indicators collected for each event.
+  **Table I: Feature Set**
+  | # | Feature | Source | Type | Notes |
+
+  [README.md]
+  \- Twilio SMS Alert
+  \- models/
+  \- results/
+
+## 4. Saved Model Info
+  models\active_features.pkl: {'file': 'models\\active_features.pkl', 'type': 'list'}
+  error: invalid load key, '\x08'.
+
+## 5. Notebook Outputs (Metrics)
+  No notebooks found

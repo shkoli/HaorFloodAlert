@@ -1,0 +1,509 @@
+{
+  "generated_at_utc": "2026-07-03T12:30:03.136939+00:00",
+  "seed": 42,
+  "config": {
+    "rf_params": {
+      "n_estimators": 500,
+      "max_depth": 5,
+      "min_samples_split": 2,
+      "class_weight": "balanced",
+      "random_state": 42,
+      "n_jobs": -1
+    },
+    "xgb_params_fixed": {
+      "n_estimators": 500,
+      "max_depth": 4,
+      "learning_rate": 0.05,
+      "eval_metric": "logloss",
+      "random_state": 42,
+      "verbosity": 0
+    },
+    "xgb_scale_pos_weight": "computed per-fold from training-fold class balance (n_neg/n_pos)",
+    "ensemble_weights": {
+      "rf": 0.5,
+      "xgb": 0.5
+    },
+    "augmentation_factor": 8,
+    "augmentation_noise_sigma": 0.04,
+    "augmentation_note": "8x/0.04 chosen because these are the exact values in train_honest.py, the script confirmed (via matching hyperparameters and identical file mtimes) to have produced the currently-saved models/rf_model.pkl and models/xgb_model.pkl. train_augmented.py uses a different 10x/0.05 combination on a different, superseded 40-row dataset and did not produce the deployed models.",
+    "decision_thresholds_reported": [
+      0.5,
+      0.4
+    ],
+    "feature_list_all_10": [
+      "VV",
+      "VH",
+      "vv_vh_ratio",
+      "rainfall",
+      "soil_moisture",
+      "wind",
+      "forecast_rain_next_12h",
+      "ndwi",
+      "upstream_vv",
+      "forecast_rain_72h"
+    ],
+    "feature_list_source": "models/active_features.pkl (verified identical)"
+  },
+  "dataset": {
+    "source_file": "data/honest_training_data_v2.csv",
+    "n_total_events": 131,
+    "n_real_sar_events": 77,
+    "n_proxy_pre_sentinel1_events": 54,
+    "primary_set": "77-event real_sar subset (data_quality == 'real_sar')"
+  },
+  "loocv_77_real_sar": {
+    "with_augmentation": {
+      "n_events": 77,
+      "n_flood": 32,
+      "n_dry": 45,
+      "augmentation": {
+        "applied": true,
+        "factor": 8,
+        "sigma": 0.04
+      },
+      "auc": 0.9388888888888889,
+      "metrics_threshold_0.50": {
+        "threshold": 0.5,
+        "accuracy": 0.9090909090909091,
+        "precision": 0.8787878787878788,
+        "recall": 0.90625,
+        "f1": 0.8923076923076924,
+        "specificity": 0.9111111111111111,
+        "n_correct": 70,
+        "n_total": 77,
+        "confusion_matrix": {
+          "tn": 41,
+          "fp": 4,
+          "fn": 3,
+          "tp": 29
+        }
+      },
+      "metrics_threshold_0.40": {
+        "threshold": 0.4,
+        "accuracy": 0.8961038961038961,
+        "precision": 0.8529411764705882,
+        "recall": 0.90625,
+        "f1": 0.8787878787878788,
+        "specificity": 0.8888888888888888,
+        "n_correct": 69,
+        "n_total": 77,
+        "confusion_matrix": {
+          "tn": 40,
+          "fp": 5,
+          "fn": 3,
+          "tp": 29
+        }
+      }
+    },
+    "without_augmentation": {
+      "n_events": 77,
+      "n_flood": 32,
+      "n_dry": 45,
+      "augmentation": {
+        "applied": false,
+        "factor": null,
+        "sigma": null
+      },
+      "auc": 0.9222222222222222,
+      "metrics_threshold_0.50": {
+        "threshold": 0.5,
+        "accuracy": 0.8571428571428571,
+        "precision": 0.8620689655172413,
+        "recall": 0.78125,
+        "f1": 0.819672131147541,
+        "specificity": 0.9111111111111111,
+        "n_correct": 66,
+        "n_total": 77,
+        "confusion_matrix": {
+          "tn": 41,
+          "fp": 4,
+          "fn": 7,
+          "tp": 25
+        }
+      },
+      "metrics_threshold_0.40": {
+        "threshold": 0.4,
+        "accuracy": 0.8701298701298701,
+        "precision": 0.8235294117647058,
+        "recall": 0.875,
+        "f1": 0.8484848484848485,
+        "specificity": 0.8666666666666667,
+        "n_correct": 67,
+        "n_total": 77,
+        "confusion_matrix": {
+          "tn": 39,
+          "fp": 6,
+          "fn": 4,
+          "tp": 28
+        }
+      }
+    }
+  },
+  "five_fold_cv": {
+    "full_131_events": {
+      "n_events": 131,
+      "n_splits": 5,
+      "fold_accuracy": [
+        0.9259259259259259,
+        0.8846153846153846,
+        0.8076923076923077,
+        0.9230769230769231,
+        0.8846153846153846
+      ],
+      "mean_accuracy": 0.8851851851851851,
+      "std_accuracy": 0.04266470945422043,
+      "fold_auc": [
+        0.9333333333333333,
+        0.9583333333333334,
+        0.9285714285714286,
+        0.9940476190476191,
+        0.9136904761904762
+      ],
+      "mean_auc": 0.945595238095238,
+      "std_auc": 0.028170802336965672
+    },
+    "real_sar_77_events": {
+      "n_events": 77,
+      "n_splits": 5,
+      "fold_accuracy": [
+        1.0,
+        0.875,
+        0.8666666666666667,
+        0.8,
+        0.8666666666666667
+      ],
+      "mean_accuracy": 0.8816666666666666,
+      "std_accuracy": 0.06506407098647711,
+      "fold_auc": [
+        1.0,
+        0.9523809523809523,
+        0.9444444444444444,
+        0.9259259259259259,
+        0.8888888888888888
+      ],
+      "mean_auc": 0.9423280423280425,
+      "std_auc": 0.03621151033284376
+    }
+  },
+  "ablation_131_events": {
+    "note": "'no_sar' removes VV/VH/vv_vh_ratio only -- upstream_vv is explicitly KEPT in that arm. 'all_minus_upstream_vv_only' is the new arm isolating just the upstream discharge proxy.",
+    "arms": {
+      "all_10_features_baseline": {
+        "n_features": 10,
+        "features": [
+          "VV",
+          "VH",
+          "vv_vh_ratio",
+          "rainfall",
+          "soil_moisture",
+          "wind",
+          "forecast_rain_next_12h",
+          "ndwi",
+          "upstream_vv",
+          "forecast_rain_72h"
+        ],
+        "accuracy": 0.8931297709923665,
+        "precision": 0.8833333333333333,
+        "recall": 0.8833333333333333,
+        "f1": 0.8833333333333333,
+        "specificity": 0.9014084507042254,
+        "auc": 0.9424882629107981,
+        "confusion_matrix": {
+          "tn": 64,
+          "fp": 7,
+          "fn": 7,
+          "tp": 53
+        }
+      },
+      "no_sar_upstream_vv_kept": {
+        "n_features": 7,
+        "features": [
+          "rainfall",
+          "soil_moisture",
+          "wind",
+          "forecast_rain_next_12h",
+          "ndwi",
+          "upstream_vv",
+          "forecast_rain_72h"
+        ],
+        "accuracy": 0.8778625954198473,
+        "precision": 0.8793103448275862,
+        "recall": 0.85,
+        "f1": 0.864406779661017,
+        "specificity": 0.9014084507042254,
+        "auc": 0.9392018779342723,
+        "confusion_matrix": {
+          "tn": 64,
+          "fp": 7,
+          "fn": 9,
+          "tp": 51
+        }
+      },
+      "no_rain_forecasts": {
+        "n_features": 7,
+        "features": [
+          "VV",
+          "VH",
+          "vv_vh_ratio",
+          "soil_moisture",
+          "wind",
+          "ndwi",
+          "upstream_vv"
+        ],
+        "accuracy": 0.8702290076335878,
+        "precision": 0.864406779661017,
+        "recall": 0.85,
+        "f1": 0.8571428571428571,
+        "specificity": 0.8873239436619719,
+        "auc": 0.946244131455399,
+        "confusion_matrix": {
+          "tn": 63,
+          "fp": 8,
+          "fn": 9,
+          "tp": 51
+        }
+      },
+      "no_soil_moisture": {
+        "n_features": 9,
+        "features": [
+          "VV",
+          "VH",
+          "vv_vh_ratio",
+          "rainfall",
+          "wind",
+          "forecast_rain_next_12h",
+          "ndwi",
+          "upstream_vv",
+          "forecast_rain_72h"
+        ],
+        "accuracy": 0.8854961832061069,
+        "precision": 0.8947368421052632,
+        "recall": 0.85,
+        "f1": 0.8717948717948718,
+        "specificity": 0.9154929577464789,
+        "auc": 0.9488262910798122,
+        "confusion_matrix": {
+          "tn": 65,
+          "fp": 6,
+          "fn": 9,
+          "tp": 51
+        }
+      },
+      "sar_only": {
+        "n_features": 3,
+        "features": [
+          "VV",
+          "VH",
+          "vv_vh_ratio"
+        ],
+        "accuracy": 0.7099236641221374,
+        "precision": 0.6375,
+        "recall": 0.85,
+        "f1": 0.7285714285714285,
+        "specificity": 0.5915492957746479,
+        "auc": 0.7948356807511736,
+        "confusion_matrix": {
+          "tn": 42,
+          "fp": 29,
+          "fn": 9,
+          "tp": 51
+        }
+      },
+      "weather_only": {
+        "n_features": 5,
+        "features": [
+          "rainfall",
+          "soil_moisture",
+          "wind",
+          "forecast_rain_next_12h",
+          "forecast_rain_72h"
+        ],
+        "accuracy": 0.7938931297709924,
+        "precision": 0.7619047619047619,
+        "recall": 0.8,
+        "f1": 0.7804878048780488,
+        "specificity": 0.7887323943661971,
+        "auc": 0.8708920187793427,
+        "confusion_matrix": {
+          "tn": 56,
+          "fp": 15,
+          "fn": 12,
+          "tp": 48
+        }
+      },
+      "all_minus_upstream_vv_only": {
+        "n_features": 9,
+        "features": [
+          "VV",
+          "VH",
+          "vv_vh_ratio",
+          "rainfall",
+          "soil_moisture",
+          "wind",
+          "forecast_rain_next_12h",
+          "ndwi",
+          "forecast_rain_72h"
+        ],
+        "accuracy": 0.8854961832061069,
+        "precision": 0.8813559322033898,
+        "recall": 0.8666666666666667,
+        "f1": 0.8739495798319328,
+        "specificity": 0.9014084507042254,
+        "auc": 0.9417840375586853,
+        "confusion_matrix": {
+          "tn": 64,
+          "fp": 7,
+          "fn": 8,
+          "tp": 52
+        }
+      }
+    }
+  },
+  "holdout_77_real_sar": {
+    "dataset": "77-event real_sar subset",
+    "n_seeds": 5,
+    "test_size": 0.4,
+    "per_seed": [
+      {
+        "seed": 1,
+        "accuracy": 0.8064516129032258,
+        "auc": 0.9102564102564102,
+        "precision": 0.7058823529411765,
+        "recall": 0.9230769230769231,
+        "f1": 0.8
+      },
+      {
+        "seed": 2,
+        "accuracy": 0.8064516129032258,
+        "auc": 0.9145299145299145,
+        "precision": 0.7692307692307693,
+        "recall": 0.7692307692307693,
+        "f1": 0.7692307692307693
+      },
+      {
+        "seed": 3,
+        "accuracy": 0.7741935483870968,
+        "auc": 0.9358974358974359,
+        "precision": 0.75,
+        "recall": 0.6923076923076923,
+        "f1": 0.72
+      },
+      {
+        "seed": 4,
+        "accuracy": 0.9354838709677419,
+        "auc": 0.9914529914529914,
+        "precision": 1.0,
+        "recall": 0.8461538461538461,
+        "f1": 0.9166666666666666
+      },
+      {
+        "seed": 5,
+        "accuracy": 0.7419354838709677,
+        "auc": 0.8376068376068376,
+        "precision": 0.6666666666666666,
+        "recall": 0.7692307692307693,
+        "f1": 0.7142857142857143
+      }
+    ],
+    "mean_accuracy": 0.8129032258064516,
+    "std_accuracy": 0.06579380017539076,
+    "mean_auc": 0.9179487179487179,
+    "std_auc": 0.0494989136258812
+  },
+  "deconfounding": {
+    "n_events": 131,
+    "raw_temp_vs_label": {
+      "r": 0.5703690510492353,
+      "p_value": 1.147614707262435e-12
+    },
+    "raw_temp_vs_month": {
+      "r": 0.39997094388949406,
+      "p_value": 2.211102355572778e-06
+    },
+    "temp_anomaly_vs_label": {
+      "r": -0.03051175977080115,
+      "p_value": 0.7293753150455139
+    }
+  },
+  "ffwc_sw269_gauge": {
+    "status": "OK",
+    "n_readings_total_in_gauge_file": 22473,
+    "n_dates_matched_to_labeled_events": 97,
+    "note": "Flood/dry split is derived by joining the gauge file's daily-mean water level to flood_label (from FFWC/BWDB reports) on calendar date. Only dates present in both files can be labeled -- this is 97 of 131 labeled events, not the full 22473-reading series.",
+    "flood_mean_water_level_m": 5.772581395348837,
+    "flood_n": 43,
+    "dry_mean_water_level_m": 2.7620925925925928,
+    "dry_n": 54,
+    "t_test": {
+      "t_statistic": 6.7653906340691305,
+      "p_value": 1.086592455896331e-09
+    },
+    "point_biserial_r": {
+      "r": 0.5615679425787296,
+      "p_value": 2.1766875470007067e-09
+    },
+    "naive_best_threshold_m": 2.651,
+    "naive_threshold_accuracy": 0.7628865979381443,
+    "naive_threshold_is_in_sample_not_cross_validated": true
+  },
+  "baselines_77_real_sar": {
+    "majority_class": {
+      "auc": null,
+      "auc_note": "Not computed: a constant majority-class predictor has no meaningful ranking score; using the training-fold class proportion as a pseudo-probability produces a spurious near-perfect anti-correlation under LOOCV on small n, which would be misleading to report as an AUC value.",
+      "threshold": 0.5,
+      "accuracy": 0.5844155844155844,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "specificity": 1.0,
+      "n_correct": 45,
+      "n_total": 77,
+      "confusion_matrix": {
+        "tn": 45,
+        "fp": 0,
+        "fn": 32,
+        "tp": 0
+      }
+    },
+    "rainfall_threshold_rule": {
+      "auc_using_raw_rainfall_as_score": 0.7986111111111112,
+      "threshold": 0.5,
+      "accuracy": 0.7532467532467533,
+      "precision": 0.6326530612244898,
+      "recall": 0.96875,
+      "f1": 0.7654320987654321,
+      "specificity": 0.6,
+      "n_correct": 58,
+      "n_total": 77,
+      "confusion_matrix": {
+        "tn": 27,
+        "fp": 18,
+        "fn": 1,
+        "tp": 31
+      }
+    },
+    "logistic_regression": {
+      "auc": 0.9118055555555555,
+      "threshold": 0.5,
+      "accuracy": 0.8051948051948052,
+      "precision": 0.7575757575757576,
+      "recall": 0.78125,
+      "f1": 0.7692307692307693,
+      "specificity": 0.8222222222222222,
+      "n_correct": 62,
+      "n_total": 77,
+      "confusion_matrix": {
+        "tn": 37,
+        "fp": 8,
+        "fn": 7,
+        "tp": 25
+      }
+    }
+  },
+  "sar_figure_fig3_4": {
+    "status": "SCRIPT_GENERATED_NOT_RUN",
+    "script_path": "gee_scripts\\export_fig_sar_real.js",
+    "instructions": "Paste gee_scripts/export_fig_sar_real.js into https://code.earthengine.google.com/, click Run, then run both Export.image.toDrive tasks from the Tasks tab. Download the two GeoTIFFs from Google Drive folder 'HaorFloodAlert_Fig3_4' and build the two-panel dB figure locally with a shared colorbar (vmin=-25, vmax=0 dB), sized for an 8.9cm/3.5in IEEE column width at 300+ DPI, saved as sar_before_during.png. No synthetic substitute was generated by this script."
+  },
+  "total_runtime_seconds": 1888.6
+}
