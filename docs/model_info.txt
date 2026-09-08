@@ -5,7 +5,7 @@ Scanned from: C:\Users\Lenovo\HaorFloodAlert
 
 ## 1. Key Lines from Python Files
   [add_barak_discharge.py : line 28]
-  5. Compare new LOOCV accuracy with old (88.9%)
+  5. Compare new LOOCV accuracy with old (89.6%)
   [app.py : line 17]
   This system uses **13 satellite and meteorological features** — including Sentinel-1 SAR,
   [app.py : line 18]

@@ -30,7 +30,7 @@ st.markdown(
     |------|-------------|
     | Prediction | Live 3-7 day flood risk forecast with 5-day rainfall animation |
     | Map | Real-time Sentinel-1 SAR water mask (Google Earth Engine) |
-    | Alerts | Telegram Bot + WhatsApp + Gmail community alert system |
+    | Alerts | SMS (BulkSMSBD) + Email (SMTP) + WhatsApp-ready template community alert system |
     | About | Project methodology, novel contributions, references |
     | Validation | Historical accuracy validation — 101 events, 2010-2024 |
     | CropDamage | Boro rice crop damage + flood duration prediction |

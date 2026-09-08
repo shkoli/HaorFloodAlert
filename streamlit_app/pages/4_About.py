@@ -62,15 +62,15 @@ with col1:
        Barak GloFAS discharge excluded (likely correlated with upstream_vv; pending
        multicollinearity test — see `add_barak_discharge.py`). Both retained as
        real-time hydraulic dashboard indicators.
-    3. **Model Training** — RF (500) + XGBoost (500) trained on 72 real-SAR events
+    3. **Model Training** — RF (500) + XGBoost (500) trained on 77 real-SAR events
        (LOOCV with 8× Gaussian augmentation). LSTM (2-layer) trained separately on
        synthetic time-series sequences; **excluded from primary metric** — walk-forward
        validation on 101 rows yields 100% accuracy (overfit due to small n).
        LSTM included in the ensemble only when its model file is present; primary
        performance claims are for RF + XGBoost only.
-    4. **Primary Validation** — **Leave-One-Out Cross-Validation (LOOCV) on 72 real,
+    4. **Primary Validation** — **Leave-One-Out Cross-Validation (LOOCV) on 77 real,
        post-Sentinel-1 events with genuine satellite data (2014–2024):**
-       Accuracy **88.9%**, Recall **93.8%**, F1 **88.2%**, AUC-ROC **89.9%**.
+       Accuracy **89.6%**, Precision **87.5%**, Recall **87.5%**, F1 **87.5%**.
        This is the thesis's main reported metric (100% real satellite inputs).
     5. **Supplementary Validation** — 45 historical events (2017–2024) using Open-Meteo
        archived rainfall + physics-calibrated SAR/NDWI proxies (not live GEE values).
@@ -165,7 +165,7 @@ with col1:
     | Upstream proxy | Sentinel-1 over Barak river, Silchar, Assam |
     | ML models | scikit-learn RandomForest + XGBoost + PyTorch LSTM |
     | Dashboard | Streamlit + Folium |
-    | Community alerts | Gmail SMTP (primary) · Telegram Bot + WhatsApp API (tested) |
+    | Community alerts | Bengali SMS (BulkSMSBD API) · Gmail SMTP · WhatsApp-ready template (manual forwarding) |
     | Language | Python 3.11 |
 
     ---
@@ -406,10 +406,11 @@ with col2:
 
     ## Alert System
 
-    - **Gmail SMTP** — primary (email alerts)
+    - **Bengali SMS** — BulkSMSBD HTTP API
+    - **Gmail SMTP** — email alerts
+    - **WhatsApp-ready template** — for manual forwarding
     - **Demo mode** — thesis presentation
     - **Languages** — Bangla + English
-    - *(Telegram Bot + WhatsApp API: implemented and tested; removed from production page for simplicity)*
 
     ---
 

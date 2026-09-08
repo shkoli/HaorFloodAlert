@@ -188,9 +188,9 @@ with tc2:
     st.markdown("""
 **ML models:** scikit-learn RandomForest (500 trees, w=0.45) + XGBoost (500 est., w=0.35) + PyTorch LSTM (w=0.20, synthetic training ⚠️ — excluded from primary accuracy metric)
 **Features:** 15 collected · 13 ML inputs · 2 hydraulic dashboard indicators
-**Primary validation:** LOOCV on 72 real-SAR events (2014–2024)
+**Primary validation:** LOOCV on 77 real-SAR events (2014–2024)
 **Dashboard:** Streamlit · Folium · Plotly
-**Alerts:** Gmail SMTP · Telegram Bot (tested) · WhatsApp API (tested)
+**Alerts:** Bengali SMS via BulkSMSBD HTTP API · Gmail SMTP e-mail · WhatsApp-ready template (manual forwarding)
 **Language:** Python 3.11
     """)
 
