@@ -22,7 +22,7 @@ for Sunamganj, Bangladesh
 
 \- Streamlit Dashboard  
 
-\- Twilio SMS Alert  
+\- Bengali SMS via BulkSMSBD HTTP API, e-mail via SMTP, WhatsApp-ready template (manual forwarding)  
 
 
 
