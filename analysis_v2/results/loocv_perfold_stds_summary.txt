@@ -1,0 +1,18 @@
+========================================================================
+Cross-check: freshly-run loocv_ensemble() vs results/paper_results.json
+  MATCH -- the unmodified loocv_ensemble(), called here directly, reproduces results/paper_results.json exactly (deterministic, seed=42).
+========================================================================
+
+Metric          Baseline (global stds)  Diagnostic (per-fold stds)   Delta (pp)
+Accuracy                         90.9%                       89.6%        -1.3
+Precision                        87.9%                       87.5%        -0.4
+Recall                           90.6%                       87.5%        -3.1
+F1                               89.2%                       87.5%        -1.7
+Specificity                      91.1%                       91.1%        +0.0
+AUC                              0.939                       0.939       +0.000
+
+Confusion matrix:
+  Baseline (global stds)    : TN=41 FP=4 FN=3 TP=29
+  Diagnostic (per-fold stds): TN=41 FP=4 FN=4 TP=28
+
+Events whose predicted class (@0.50) flipped between the two runs: 1 / 77
