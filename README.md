@@ -2,6 +2,9 @@
 
 A machine-learning early-warning system for pre-monsoon flash floods in the Sunamganj Haor, northeast Bangladesh. It combines Sentinel-1 SAR backscatter, rainfall forecasts, soil moisture, and a modelled upstream Barak river discharge proxy to produce a 72-hour flood probability forecast.
 
+![Sentinel-1 SAR backscatter comparison](docs/figures/fig_sar_real.png)
+Dry-season reference (January 2017) and the April 2017 pre-monsoon flash flood; mean VV drops from -12.4 to -16.0 dB.
+
 ## Paper
 
 Accepted at **IEEE COMPAS 2026**, University of Dhaka, 9–10 October 2026 (Paper ID 102).
@@ -22,7 +25,15 @@ Source: `analysis_v2/results/loocv_perfold_stds_summary.txt`, `analysis_v2/resul
 
 Primary confusion matrix (77 real-SAR events, threshold 0.50): TN=41, FP=4, FN=4, TP=28.
 
+![LOOCV confusion matrix and ROC curve](docs/figures/fig_cm_roc.png)
+LOOCV confusion matrix and ROC curve, 77 real-SAR events.
+
 The leave-one-year-out result is the stricter test: each fold predicts a year the model has never trained on, rather than a single held-out event drawn from an overlapping pool of years. Compared to LOOCV, the degradation is concentrated in recall (87.5% → 75.0%), not spread evenly across metrics — the costly direction for an early-warning system, since it means missing a larger share of real floods when the model faces a genuinely unseen year.
+
+## Prospective validation
+
+![Ten-day prospective run](docs/figures/fig_prospective.png)
+Ten-day prospective run, 26 May - 5 June 2026, model probability against observed FFWC SW269 water level.
 
 ## Data
 
