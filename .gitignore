@@ -18,3 +18,12 @@ Thumbs.db
 *.tif
 *.tiff
 *.geotiff
+
+# Runtime noise (generated locally, not part of the repo)
+logger_output.txt
+*.log
+
+# Duplicate export / working assets (kept on disk, not part of the repo)
+dib_export.zip
+dib_export/
+thesis_screenshots/
