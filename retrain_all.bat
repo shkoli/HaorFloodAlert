@@ -5,13 +5,14 @@ echo ================================================
 echo.
 cd /d C:\Users\Lenovo\HaorFloodAlert
 
-echo [1/2] Training RF + XGBoost...
-python retrain_model.py
+echo [1/1] Training RF + XGBoost...
+python legacy\retrain_model.py
 echo.
 
-echo [2/2] Training LSTM...
-python train_lstm.py
-echo.
+REM LSTM retraining is intentionally not run here. The LSTM is excluded from
+REM the published ensemble (its 100% walk-forward accuracy was a memorisation
+REM artefact, not genuine skill). To retrain it anyway, run
+REM legacy\train_lstm.py manually.
 
 echo ================================================
 echo   Retraining complete!

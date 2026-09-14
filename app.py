@@ -19,8 +19,8 @@ st.markdown(
     Open-Meteo 72h forecast — to predict flash flood risk in the haor wetlands of
     Sylhet-Sunamganj with an ensemble of Random Forest, XGBoost, and LSTM.
 
-    **Model Performance (Honest Evaluation on 101 real observations, 2010-2024):**
-    - Accuracy: 89.1% | F1: 87.9% | AUC-ROC: 94.6%
+    **Model Performance (LOOCV on 77 real Sentinel-1 SAR events, 2014-2024):**
+    - Accuracy: 89.6% | F1: 87.5% | AUC-ROC: 0.939
     - Labels from: FFWC Annual Reports, Mondal et al. (2021), Bhuiyan et al. (2024), World Bank GRADE (2024)
     - Evaluation: Leave-One-Out Cross-Validation (LOOCV) + 8x Gaussian augmentation
 
@@ -32,7 +32,7 @@ st.markdown(
     | Map | Real-time Sentinel-1 SAR water mask (Google Earth Engine) |
     | Alerts | SMS (BulkSMSBD) + Email (SMTP) + WhatsApp-ready template community alert system |
     | About | Project methodology, novel contributions, references |
-    | Validation | Historical accuracy validation — 101 events, 2010-2024 |
+    | Validation | Historical accuracy validation — 131-event inventory (77 real-SAR + 54 pre-Sentinel-1 proxy), 2009-2024 |
     | CropDamage | Boro rice crop damage + flood duration prediction |
 
     ---

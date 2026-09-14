@@ -58,7 +58,17 @@ BST = timezone(timedelta(hours=6))   # Bangladesh Standard Time = UTC+6
 
 st.set_page_config(page_title="Flood Prediction", page_icon="🔮", layout="wide")
 st.title("🔮 Real-Time Flood Risk Prediction")
-st.subheader("Sunamganj Haor — RF + XGBoost | 11 Active Features | LOOCV 89.6% (real-SAR, deconfounded)")
+st.subheader("Sunamganj Haor — exploratory RF + XGBoost + LSTM ensemble, live GEE-fetched features")
+
+st.warning(
+    "**This exploratory page is not the published model.** It blends "
+    "RF (0.45) + XGBoost (0.35) + LSTM (0.20). The published paper and the "
+    "scheduled forecast path (`daily_validation.py` → `utils/predict.py`) use "
+    "RF (0.5) + XGBoost (0.5) with the LSTM excluded, because the LSTM's 100% "
+    "walk-forward accuracy (AUC 1.000) was a memorisation artefact at this data "
+    "scale, not genuine skill. Numbers shown on this page are therefore **not** "
+    "the paper's numbers and must not be cited as such."
+)
 
 N_FEAT = len(FEATURES)
 
@@ -117,7 +127,7 @@ def lstm_predict(model, scaler, feat_row, active_feats, all_feats, lstm_type="ke
     The most likely failure is a feature-count mismatch: the LSTM scaler was
     fitted on the old feature list that included raw 'temp' (11 features),
     but the current FEATURES list uses 'temp_anomaly' instead (still 13 total,
-    but active_feats trimmed to 11 may differ).  Since LSTM weight = 0.20 and
+    but active_feats trimmed to 10 may differ).  Since LSTM weight = 0.20 and
     it was trained on synthetic data, a neutral fallback is safe.
     """
     try:
@@ -362,11 +372,11 @@ with st.expander("🔬 Model Technical Details — RF + XGBoost + LSTM", expande
     with mc1:
         st.markdown("**Random Forest**")
         st.progress(float(rf_prob), text=f"{rf_prob*100:.1f}%")
-        st.caption(f"500 trees · {len(active_feats)} features · LOOCV 89.6% (real-SAR) · 87.8% (extended, deconfounded)")
+        st.caption(f"500 trees · {len(active_feats)} features · part of the RF+XGB ensemble that scores LOOCV 89.6% (real-SAR) / 87.8% (extended) — not this submodel alone")
     with mc2:
         st.markdown("**XGBoost**")
         st.progress(float(xgb_prob), text=f"{xgb_prob*100:.1f}%")
-        st.caption(f"500 estimators · {len(active_feats)} features · LOOCV 89.6% (real-SAR) · 87.8% (extended, deconfounded)")
+        st.caption(f"500 estimators · {len(active_feats)} features · part of the RF+XGB ensemble that scores LOOCV 89.6% (real-SAR) / 87.8% (extended) — not this submodel alone")
     with mc3:
         st.markdown("**LSTM (5-day sequence)**")
         if lstm_ok:

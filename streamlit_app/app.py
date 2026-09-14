@@ -56,16 +56,16 @@ with col_stats:
               delta_color="off",
               help="Leave-One-Out CV on 77 real Sentinel-1 SAR events (2014–2024). "
                    "temp_anomaly replaces raw temp — seasonal confound removed.")
-    m2.metric("Hold-out Accuracy", "86.7%",
-              delta="5-seed stratified mean",
+    m2.metric("Hold-out Accuracy", "81.3% ± 6.6%",
+              delta="Stratified 60/40, 5-seed mean",
               delta_color="off",
-              help="Independent hold-out on 45 historical events (2017–2024). Conservative real-world estimate.")
+              help="Stratified 60/40 holdout on the 77 real-SAR events (2014–2024), 5 random seeds. AUC 0.918 ± 0.049.")
     m3, m4 = st.columns(2)
     m3.metric("Recall / F1", "87.5% / 87.5%",
               delta="Real-SAR LOOCV (77 events)",
               delta_color="off",
               help="Recall: 28/32 real floods correctly detected. F1 = harmonic mean.")
-    m4.metric("AUC-ROC", "93.6%", delta_color="off",
+    m4.metric("AUC-ROC", "0.939", delta_color="off",
               help="Real-SAR LOOCV (77 events). Extended 131-event LOOCV: 87.8% acc, AUC 94.1%.")
 
 st.divider()

@@ -60,7 +60,7 @@ with col1:
     2. **Feature Engineering** — 15 features collected; 13 used as ML inputs.
        Surma GloFAS discharge excluded (multicollinearity r=0.79 with soil moisture).
        Barak GloFAS discharge excluded (likely correlated with upstream_vv; pending
-       multicollinearity test — see `add_barak_discharge.py`). Both retained as
+       multicollinearity test — see `legacy/add_barak_discharge.py`). Both retained as
        real-time hydraulic dashboard indicators.
     3. **Model Training** — RF (500) + XGBoost (500) trained on 77 real-SAR events
        (LOOCV with 8× Gaussian augmentation). LSTM (2-layer) trained separately on
@@ -90,10 +90,10 @@ with col1:
     |--------|-------|-----------------|-------------|
     | **LOOCV — 77 real-SAR events** | **89.6%** | Real Sentinel-1/CHIRPS/ERA5 data (2014–2024). `temp_anomaly` replaces raw temp — seasonal confound removed. | ✅ **Primary metric** |
     | Recall / Precision / F1 | **87.5% / 87.5% / 87.5%** | Balanced: 28/32 floods caught, 4/45 dry misclassified | ✅ |
-    | AUC-ROC | **93.6%** | Area under ROC curve — threshold-independent | ✅ |
+    | AUC-ROC | **0.939** | Area under ROC curve — threshold-independent | ✅ |
     | LOOCV — 131 events (extended) | **87.8%** | Adds 30 FFWC-verified events (2009–2024) with real Open-Meteo rainfall + calibrated SAR proxies. Seasonal confound removed. | ✅ Extended (mixed real+proxy SAR) |
     | Extended F1 / AUC | 86.4% / 94.1% | From 131-event LOOCV; currently deployed models | ✅ Extended |
-    | **45-event hold-out validation** | **86.7% (5-seed stratified)** | 2017–2024 events; Open-Meteo archive + calibrated SAR proxies; independent complement to LOOCV | ⚠️ Proxy-based |
+    | **Stratified 60/40 holdout (5 seeds)** | **81.3% ± 6.6%** | 77 real-SAR events, five random 60/40 splits; AUC 0.918 ± 0.049; independent complement to LOOCV | ✅ Real-SAR |
     | 5-fold CV on synthetic data | 99.7% ± 0.2% | Trained and tested on same distribution — confirms separability, **not** real-world accuracy | ⚠️ Inflated — do not cite |
 
     > **Temperature deconfounding:** Raw temperature had r=0.570 with flood label — the model
@@ -120,7 +120,7 @@ with col1:
 
     | # | Limitation | Impact | Future Fix |
     |---|---|---|---|
-    | 1 | **Training data is synthetic** | Model calibrated from literature, not real GEE samples | Collect real GEE data (see `collect_real_haor_data.py`) |
+    | 1 | **Training data is synthetic** | Model calibrated from literature, not real GEE samples | Collect real GEE data (see `legacy/collect_real_haor_data.py`) |
     | 2 | **Validation uses SAR proxies** | VV/NDWI/soil are physics-calibrated, not actual satellite values for historical dates | Live GEE calls for each event (20+ min wait) |
     | 3 | **Upstream proxy is indirect** | Sentinel-1 over Silchar ≠ actual barrage gate sensors | Partner with India CWC/BWDB for real gauge data |
     | 4 | **NDWI unusable during peak floods** | Sentinel-2 is 100% cloud-blocked during June–August monsoon. NDWI returns a static default value at the exact time floods are most severe — making it a weak feature for the highest-risk events. RF importance weight 0.200 may be inflated by dry-season correlation. | Use Sentinel-1 SAR (cloud-penetrating) as primary; collect cloud-free NDWI only for pre-monsoon flash flood window (Mar–May) |
@@ -128,7 +128,7 @@ with col1:
     | 6 | **GEE has 2–3 day data lag** | Real-time prediction actually uses data from 2–9 days ago | Subscribe to Copernicus DIAS for faster access |
     | 7 | **TWI is terrain-static** | HydroSHEDS TWI does not change with season or cultivation | Re-compute with seasonal DEM updates |
     | 8 | **LSTM overfit — excluded from primary metric** | Walk-forward validation on n=101 rows yields 100% accuracy — a clear sign of overfit, not true generalisation. LSTM was trained on synthetic time-series sequences; real haor SAR sequences are unavailable in sufficient quantity (minimum ~500 needed). LSTM contributes weight=0.20 when loaded but its contribution is cosmetic at current data size. | Collect 5+ years of daily Sentinel-1 time-series; retrain LSTM; validate with proper temporal hold-out |
-    | 9 | **Small real training dataset** | Only 12 real GEE rows collected (all with rainfall=120 hardcoded) | Recollect with `collect_real_haor_data.py` |
+    | 9 | **Small real training dataset** | Only 12 real GEE rows collected (all with rainfall=120 hardcoded) | Recollect with `legacy/collect_real_haor_data.py` |
     | 10 | **Flood duration model is empirical** | Duration formula is calibrated from BWDB records, not physics-based | Train dedicated LSTM on BWDB gauge time-series |
     | 11 | **TWI and slope are constant across all real training rows** | Both features = same value for every event (TWI=17.185, slope=1.91); dropped in LOOCV model, but kept in synthetic model — creates train/test feature mismatch | Collect per-event TWI from GEE at event dates or remove from feature set |
 
@@ -247,7 +247,8 @@ with col1:
       <span style="color:#fff;font-weight:700;font-size:0.93rem;letter-spacing:0.6px;text-transform:uppercase">ML Ensemble — 3-Layer Prediction</span>
     </div>
     <div style="background:#160a26;padding:12px 18px;font-size:0.87rem;line-height:1.9">
-      <span style="color:#d4b8f8"><b style="color:#e8d8ff">Layer 1:</b> RF (w=0.45) + XGBoost (w=0.35) + LSTM (w=0.20) = ML base probability</span><br>
+      <span style="color:#d4b8f8"><b style="color:#e8d8ff">Layer 1 (exploratory Prediction page):</b> RF (w=0.45) + XGBoost (w=0.35) + LSTM (w=0.20) = ML base probability</span><br>
+      <span style="color:#5a5070;font-size:0.8rem">Published paper &amp; scheduled forecast path (daily_validation.py) use RF (w=0.5) + XGBoost (w=0.5) only — LSTM excluded (memorisation artefact at this data scale)</span><br>
       <span style="color:#b499e0"><b style="color:#cc99ff">Layer 2:</b> Barak discharge level (DANGER / HIGH) → +0–15 percentage points</span><br>
       <span style="color:#9a7fc8"><b style="color:#b088ee">Layer 3:</b> 14-day rising trend (R²-gated OLS) → +0–15 percentage points</span><br>
       <span style="color:#5a5070;font-size:0.8rem">Combined discharge cap: 30 pp &nbsp;·&nbsp; Final probability cap: 95%</span>
@@ -364,25 +365,30 @@ with col2:
 
     **Primary (thesis) metric:**
     LOOCV on **77 real-SAR events** (2014–2024)
-    **Accuracy: 88.3%**
-    Recall: 87.5% | F1: 86.2%
-    AUC-ROC: 94.3%
+    **Accuracy: 89.6%**
+    Precision: 87.5% | Recall: 87.5% | F1: 87.5% | Specificity: 91.1%
+    AUC-ROC: 0.939
+    Confusion matrix: TN=41, FP=4, FN=4, TP=28
 
-    **Extended dataset (131 events, 2009–2024):**
-    Accuracy: 94.7% | F1: 94.2% | AUC: 96.7%
-    *(includes proxy SAR for pre-2017 events)*
+    **Leave-one-year-out validation (2017–2024, 70 events):**
+    Accuracy: 82.9% | Recall: 75.0% | AUC-ROC: 0.914
 
-    | Metric | Value | Data |
+    **Stratified 60/40 holdout (5 seeds):**
+    Accuracy: 81.3% ± 6.6% | AUC-ROC: 0.918 ± 0.049
+
+    | Metric | Value | Protocol |
     |--------|-------|------|
-    | LOOCV Accuracy | **88.3%** | 77 real-SAR events ✅ |
-    | Recall | 87.5% | Real ✅ |
-    | F1 Score | 86.2% | Real ✅ |
-    | AUC-ROC | 94.3% | Real ✅ |
-    | Extended LOOCV | **94.7%** | 131 events (mixed) ✅ |
-    | 45-event hold-out | **86.7% (5-seed stratified)** | Proxy ⚠️ |
-    | 5-fold CV | 99.7% | Synthetic ⚠️ |
+    | Accuracy | **89.6%** | LOOCV, 77 real-SAR events ✅ |
+    | Precision | 87.5% | LOOCV, 77 real-SAR events ✅ |
+    | Recall | 87.5% | LOOCV, 77 real-SAR events ✅ |
+    | F1 Score | 87.5% | LOOCV, 77 real-SAR events ✅ |
+    | Specificity | 91.1% | LOOCV, 77 real-SAR events ✅ |
+    | AUC-ROC | 0.939 | LOOCV, 77 real-SAR events ✅ |
+    | Accuracy (LOYO) | 82.9% | Leave-one-year-out, 2017–2024 ✅ |
+    | AUC-ROC (LOYO) | 0.914 | Leave-one-year-out, 2017–2024 ✅ |
+    | Accuracy (holdout) | 81.3% ± 6.6% | Stratified 60/40, 5 seeds ✅ |
 
-    Features collected: **15** · ML inputs: **11 active** | Training rows: **131**
+    Features collected: **15** · ML inputs: **10 active** | Training rows: **131**
 
     ---
 

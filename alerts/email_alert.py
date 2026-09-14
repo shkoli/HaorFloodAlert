@@ -209,8 +209,9 @@ def _build_html(flood_prob: float, upstream_vv: float, rainfall: float,
       <td style="padding:16px 28px;">
         <p style="margin:0;font-size:12px;color:#888;line-height:1.6;">
           <strong>HaorFloodAlert</strong> · RTM Al-Kabir Technical University<br>
-          Ensemble: RF×0.45 + XGBoost×0.35 + LSTM×0.20 ·
-          LOOCV accuracy 89.6% on 77 real Sentinel-1 events<br>
+          RF + XGBoost ensemble (LSTM excluded from published results) ·
+          LOOCV accuracy 89.6% on 77 real Sentinel-1 events ·
+          probability supplied by the sender, not computed by this email module<br>
           Always verify with
           <a href="http://www.ffwc.gov.bd" style="color:#888;">FFWC</a>
           before taking evacuation decisions.<br>

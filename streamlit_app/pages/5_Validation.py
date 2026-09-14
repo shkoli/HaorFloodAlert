@@ -32,7 +32,7 @@ from utils.upstream_discharge import classify_discharge_risk
 
 st.set_page_config(page_title="Validation", page_icon="📊", layout="wide")
 st.title("📊 Model Validation & Accuracy Analysis")
-st.subheader("LOOCV 89.6% (real-SAR, deconfounded) · 87.8% (131 extended) · Hold-out 86.7% (45 events, 5-seed stratified)")
+st.subheader("LOOCV 89.6% (real-SAR, deconfounded) · 87.8% (131 extended) · Holdout 81.3% ± 6.6% (stratified 60/40, 5 seeds)")
 
 EVENTS = [
     ("2017-05-10","flood","classic"),  ("2017-06-01","flood","classic"),
@@ -208,7 +208,7 @@ def run_validation(threshold):
 st.success(
     "**Primary model performance — Leave-One-Out Cross-Validation (LOOCV):**  \n\n"
     "🔵 **Real-SAR only (77 events, 2014–2024 Sentinel-1, temp_anomaly deconfounded):** "
-    "Accuracy **89.6%** | Recall **87.5%** | Precision **87.5%** | F1 **87.5%** | AUC-ROC **93.6%** "
+    "Accuracy **89.6%** | Recall **87.5%** | Precision **87.5%** | F1 **87.5%** | AUC-ROC **0.939** "
     "— CM: TP=28 · TN=41 · FP=4 · FN=4. "
     "No proxy SAR, no synthetic labels. Most academically conservative estimate.  \n\n"
     "🟢 **Extended dataset (131 events, 2009–2024, temp_anomaly deconfounded):** "
@@ -216,8 +216,8 @@ st.success(
     "— Adds 30 FFWC-verified events with real Open-Meteo rainfall + calibrated SAR proxies "
     "for pre-2017 dates. Note: previous 94.7% was inflated by raw-temp seasonal confound (removed). "
     "Currently deployed models trained on this set.  \n\n"
-    "**Independent hold-out (45 events, stratified, 5-seed mean):** Accuracy **86.7%** | "
-    "F1 **85.4%** | AUC-ROC **91.0%** — stratified random split, mean over seeds 42/7/13/99/2024."
+    "**Stratified 60/40 holdout (77 real-SAR events, 5-seed mean):** Accuracy **81.3% ± 6.6%** | "
+    "AUC-ROC **0.918 ± 0.049** — five random 60/40 splits of the real-SAR set."
 )
 
 st.info(
@@ -777,9 +777,9 @@ with bl_col1:
 | Majority class (always predict Dry) | 55.6% | 0.0% | — | — | 50.0% | Trivial baseline |
 | Rainfall threshold (>100 mm → Flood) | 76.4% | 62.5% | 71.4% | 70.2% | ~65% | Rule-based, no satellite |
 | Logistic Regression (LOOCV) | 84.7% | 90.6% | 78.1% | 84.1% | ~88% | Linear, same 13 features |
-| **RF + XGB — real-SAR LOOCV (77 events, deconfounded)** | **89.6%** | **87.5%** | **87.5%** | **87.5%** | **93.6%** | **Primary thesis metric ✅ — real Sentinel-1 only** |
+| **RF + XGB — real-SAR LOOCV (77 events, deconfounded)** | **89.6%** | **87.5%** | **87.5%** | **87.5%** | **93.9%** | **Primary thesis metric ✅ — real Sentinel-1 only** |
 | **RF + XGB — extended LOOCV (131 events, deconfounded)** | **87.8%** | — | — | — | **94.1%** | **Extended metric ✅ — mixed real+proxy SAR (temp_anomaly fix)** |
-| RF + XGB Ensemble (45-event hold-out, 5-seed stratified mean) | 86.7% | 84.0% | 87.0% | 85.4% | 91.0% | Independent hold-out ✅ stratified |
+| RF + XGB Ensemble (stratified 60/40 holdout, 5-seed mean) | 81.3% ± 6.6% | — | — | — | 0.918 ± 0.049 | Independent holdout ✅ real-SAR |
 | LSTM alone (walk-forward, n=101) | 69.2% | — | — | 64.7% | 72.8% | ⚠️ Synthetic training — not primary |
 | RF+XGB+LSTM ensemble (walk-forward) | 100% | — | — | 100% | 100% | ⚠️ Overfit (n=101) — do not cite |
 """)
@@ -793,7 +793,7 @@ st.info(
     "**Recall is the key safety metric** — a missed flood (FN) endangers lives; a false alarm (FP) "
     "causes inconvenience. The ensemble's **87.5% recall** means it catches ~9 in 10 real floods. "
     "The logistic regression achieves 90.6% recall on fewer features, but the ensemble's "
-    "AUC-ROC (93.6%) and F1 (87.5%) confirm superior overall discrimination and ranking quality."
+    "AUC-ROC (0.939) and F1 (87.5%) confirm superior overall discrimination and ranking quality."
 )
 
 st.divider()

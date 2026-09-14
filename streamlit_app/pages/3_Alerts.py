@@ -485,9 +485,10 @@ with tab_manual:
 with tab_auto:
     st.markdown("### 🤖 Automated Alert")
     st.info(
-        "When **ON**, alerts are dispatched automatically whenever the flood "
-        "probability from the Prediction page exceeds the threshold. "
-        "A 1-hour cooldown prevents duplicate sends."
+        "This tab does not read a live probability from the Prediction page. "
+        "Set the probability below with the slider, then press **Fire Now** to "
+        "send — nothing is dispatched automatically. There is no cooldown; "
+        "each press sends again."
     )
 
     ac1, ac2 = st.columns([1, 2])
