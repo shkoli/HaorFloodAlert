@@ -16,7 +16,7 @@ Preprint: arXiv:2605.20167 (a v2 update is pending).
 ## Authors
 
 Salma Hoque Talukdar Koli — RTM Al-Kabir Technical University, Sylhet (corresponding)  
-Fahima Haque Talukder Jely — North East University Bangladesh, Sylhet  
+[Fahima Haque Talukder Jely](https://github.com/FahimaHaqueTalukderJely) — North East University Bangladesh, Sylhet  
 Md. Samiul Alim — RTM Al-Kabir Technical University, Sylhet  
 Md. Zakir Hossen — Dhaka University of Engineering & Technology, Gazipur
 
