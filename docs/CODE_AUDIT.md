@@ -1,5 +1,7 @@
 # Read-Only Findings — HaorFloodAlert Methodology Audit
 
+> **What this document is.** A read-only audit of this repository's released code, carried out in September 2026 while preparing the camera-ready version of the paper for IEEE COMPAS 2026. It traces specific methodology questions directly through the source code — with file and line citations — to check them against what the paper claimed. The discrepancies it found have since been corrected in the current paper text (`docs/conference_paper.md`) and in this repository's `README.md`. It is kept here as the record of how those corrections were identified, for transparency, not as a list of open problems. Several scripts cited below were subsequently moved to `legacy/` during a later repository cleanup; the paths below are left as they were at audit time and are not all still valid.
+
 Scope: answer 5 methodology questions strictly from source code (no edits made
 to this repository). Every claim below is cited to a file path and line
 number that can be independently re-checked. Line numbers refer to the files
@@ -11,7 +13,7 @@ as they exist in the working tree at the time of this audit.
 
 **Answer: No. Training in each fold is restricted to the remaining 76 real-SAR events. The 54 proxy events are structurally absent from this LOOCV — they are filtered out before the loop ever runs.**
 
-Evidence, [eval/run_paper_results.py](eval/run_paper_results.py):
+Evidence, [eval/run_paper_results.py](../eval/run_paper_results.py):
 
 - Line 644: `df_real_sar = df_full[df_full["data_quality"] == "real_sar"].reset_index(drop=True)` — this builds a dataframe containing **only** the 77 rows where `data_quality == "real_sar"`. The 54 `pre_sentinel1` rows are excluded from `df_real_sar` entirely.
 - Lines 661 and 668: `loocv_with_aug = loocv_ensemble(df_real_sar, ALL_FEATS, use_augmentation=True)` and `loocv_no_aug = loocv_ensemble(df_real_sar, ALL_FEATS, use_augmentation=False)` — the primary LOOCV function is called with `df_real_sar` (77 rows), not `df_full`/`df_full_sorted` (131 rows).
@@ -27,7 +29,7 @@ Dataset composition independently verified by reading `data/honest_training_data
 
 **Answer: Neither. T_clim is not computed from the training dataset at all, in any scope. It is a hardcoded dictionary literal in `config.py`, applied identically and unconditionally to every event at feature-generation time, entirely outside of and prior to the LOOCV loop.**
 
-Evidence, [config.py:76-89](config.py:76):
+Evidence, [config.py:76-89](../config.py:76):
 ```
 TEMP_CLIMATOLOGY = {
     1: 17.03, 2: 19.35, 3: 22.04, 4: 24.83, 5: 25.35, 6: 27.14,
@@ -37,7 +39,7 @@ TEMP_CLIMATOLOGY = {
 This is a plain Python dict literal — 12 fixed float constants, one per calendar month. It is not derived by any `.groupby()`, `.resample()`, `.mean()`, or similar pandas/numpy call on the training CSV anywhere in the repository (searched for `groupby.*month`, `resample`, `.mean()` across all `.py` files; the only `.mean()` hits are unrelated ERA5 `reduceRegion` spatial means in `collect_honest_data.py:111` and `collect_more_data.py:143`, computed per-event from Earth Engine, not from the label/feature CSV).
 
 `TEMP_CLIMATOLOGY` is consumed identically in three places, all at per-event feature-construction time (i.e., when a row is built for the dataset), never inside `eval/run_paper_results.py`'s LOOCV loop itself:
-- [utils/gee_features.py:441-442](utils/gee_features.py:441): `end_month = int(end[5:7]); temp_anomaly = round(temp - TEMP_CLIMATOLOGY.get(end_month, temp), 2)`
+- [utils/gee_features.py:441-442](../utils/gee_features.py:441): `end_month = int(end[5:7]); temp_anomaly = round(temp - TEMP_CLIMATOLOGY.get(end_month, temp), 2)`
 - [expand_training_data.py:156-157](expand_training_data.py:156): `month = int(date_str[5:7]); temp_anomaly = round(wx["temp"] - TEMP_CLIMATOLOGY.get(month, wx["temp"]), 2)`
 - [dib_export/refetch_15_events.py:180-182](dib_export/refetch_15_events.py:180): `def temp_anomaly_for(date_str, temp): ... return round(temp - TEMP_CLIMATOLOGY.get(month, temp), 2)`
 
@@ -56,7 +58,7 @@ Searches performed (all read-only, all returned no matching implementation):
 
 The only correlation-based feature exclusions that exist in the codebase use a **different** threshold and are unrelated to a systematic |r| > 0.3 screen:
 - [add_barak_discharge.py:110](add_barak_discharge.py:110): `if abs(r_upvv) > 0.70:` — a one-off multicollinearity check between `barak_discharge_cumecs` and `upstream_vv`; threshold is 0.70, and `barak_discharge_cumecs` is not in `FEATURES`/`ALL_FEATS` regardless (dashboard-only, per `config.py:69`).
-- [eval/run_paper_results.py:399-408](eval/run_paper_results.py:399), `def compute_deconfounding(df):` — computes three Pearson correlations (`temp` vs `flood_label`, `temp` vs `month`, `temp_anomaly` vs `flood_label`) and returns them for reporting only. Called once, at line 747: `deconf = compute_deconfounding(df_full_sorted)`, on the full 131-event set. Nothing is dropped or screened as a result of these numbers in this function — it produces report values, not a feature mask.
+- [eval/run_paper_results.py:399-408](../eval/run_paper_results.py:399), `def compute_deconfounding(df):` — computes three Pearson correlations (`temp` vs `flood_label`, `temp` vs `month`, `temp_anomaly` vs `flood_label`) and returns them for reporting only. Called once, at line 747: `deconf = compute_deconfounding(df_full_sorted)`, on the full 131-event set. Nothing is dropped or screened as a result of these numbers in this function — it produces report values, not a feature mask.
 
 Per the instructions, since no such screening code exists to characterize as full-dataset-scope or per-fold-scope, this is reported as **cannot determine** rather than inferred from the paper text or comments.
 
@@ -67,7 +69,7 @@ Per the instructions, since no such screening code exists to characterize as ful
 **Answer, for the primary 77-event LOOCV (`eval/run_paper_results.py`): Yes, unambiguously — `temp_anomaly` is never loaded into the feature matrix at all.**
 
 Evidence:
-- [eval/run_paper_results.py:112-116](eval/run_paper_results.py:112):
+- [eval/run_paper_results.py:112-116](../eval/run_paper_results.py:112):
   ```
   ALL_FEATS = [
       "VV", "VH", "vv_vh_ratio",
@@ -82,7 +84,7 @@ Evidence:
 **Important caveat found during verification — reported for completeness, since it bears directly on whether this holds for the currently-deployed model artifact, not just this one script:**
 
 [train_honest.py](train_honest.py) — referenced elsewhere in the repo as the script that produced the currently-saved `models/rf_model.pkl` / `models/xgb_model.pkl` — uses a **different** feature-selection mechanism that does **not** explicitly exclude `temp_anomaly`:
-- Line 17: `from config import DATA_DIR, MODELS_DIR, RESULTS_DIR, FEATURES` — imports `config.FEATURES`, which **does** include `"temp_anomaly"` ([config.py:91-116](config.py:91), `"temp_anomaly"` at line 102).
+- Line 17: `from config import DATA_DIR, MODELS_DIR, RESULTS_DIR, FEATURES` — imports `config.FEATURES`, which **does** include `"temp_anomaly"` ([config.py:91-116](../config.py:91), `"temp_anomaly"` at line 102).
 - Line 45: `avail = [f for f in FEATURES if f in df.columns]`.
 - Lines 49-52 (the only feature-dropping logic in this script): `stds = X_full.std(axis=0); keep = stds > 1e-6; kept = [f for f, k in zip(avail, keep) if k]` — a **zero-variance filter only**.
 
@@ -112,7 +114,7 @@ f796371 security: load alert credentials from .env instead of hardcoding
 
 | File:line | AUG | sigma/noise | Dataset used |
 |---|---|---|---|
-| [eval/run_paper_results.py:102-103](eval/run_paper_results.py:102) | 8 | 0.04 | `honest_training_data_v2.csv`, 77-event real_sar subset (line 644) |
+| [eval/run_paper_results.py:102-103](../eval/run_paper_results.py:102) | 8 | 0.04 | `honest_training_data_v2.csv`, 77-event real_sar subset (line 644) |
 | [train_honest.py:63](train_honest.py:63) | 8 | 0.04 | `--data` arg, default `honest_training_data.csv` (101 rows, line 19) |
 | [paper_figures.py:545](paper_figures.py:545) | 8 | 0.04 | `DATA_CSV` = `honest_training_data.csv` (line 37), 101 rows |
 | [train_with_shap.py:49](train_with_shap.py:49) | 8 | 0.04 | `honest_training_data.csv` (line 27), 101 rows |
@@ -126,7 +128,7 @@ The 8/0.04 pair is identical across four scripts, but three of those four (`trai
 
 **Conclusion: a search over sigma/augmentation-factor values against the same 77 events was not run** — there is no code, config, notebook, or git history evidence of one. The value pair (8, 0.04) appears as a literal constant, matched across scripts, with no accompanying ablation.
 
-*(Auxiliary, not relied upon as proof for the above — a pre-existing document already in this repository, [docs/PAPER_VERIFICATION.md:148](docs/PAPER_VERIFICATION.md:148), independently reaches the same conclusion from an earlier verification pass: "Augmentation factor/sigma differs by script... no before/after accuracy pair (84.4%→89.6%) was found anywhere.")*
+*(Auxiliary, not relied upon as proof for the above — a pre-existing document already in this repository, [PAPER_VERIFICATION.md:148](PAPER_VERIFICATION.md:148), independently reaches the same conclusion from an earlier verification pass: "Augmentation factor/sigma differs by script... no before/after accuracy pair (84.4%→89.6%) was found anywhere.")*
 
 ---
 
@@ -140,7 +142,7 @@ The 8/0.04 pair is identical across four scripts, but three of those four (`trai
 - `grep -rn "np\.save\|\.npy\|np\.load" --include=*.py .` — no results.
 - `grep -rln "roc_y\|roc_p" .` (all text file types) — no results.
 
-The closest existing artifact is **[results/loocv_predictions.csv](results/loocv_predictions.csv)**, written by `eval/run_paper_results.py`:
+The closest existing artifact is **[results/loocv_predictions.csv](../results/loocv_predictions.csv)**, written by `eval/run_paper_results.py`:
 - Line 673 (comment): `# Save per-event predictions (primary, with-augmentation run) for the ROC curve`
 - Lines 674-680: builds `pred_df` with columns `date`, `flood_label` (the true labels — functional analogue of `roc_y`), `predicted_probability` (the functional analogue of `roc_p`), and predicted classes at both thresholds, from `df_real_sar["date"]` and `loocv_with_aug["_trues"]`/`loocv_with_aug["_probs"]`.
 - Line 681: `pred_df.to_csv(RESULTS_DIR / "loocv_predictions.csv", index=False)`.
@@ -149,6 +151,6 @@ This is a single 77-row CSV (verified: 77 rows, columns `date, flood_label, pred
 
 ### 131-event listing (dates + labels)
 
-**[data/honest_training_data_v2.csv](data/honest_training_data_v2.csv)** — confirmed by direct read: 131 rows, columns `date, flood_label, source, VV, VH, vv_vh_ratio, rainfall, soil_moisture, temp, wind, slope, twi, forecast_rain_next_12h, ndwi, upstream_vv, forecast_rain_72h, data_quality, temp_anomaly`; `data_quality` value counts `real_sar: 77`, `pre_sentinel1: 54`. This is the file loaded at `eval/run_paper_results.py:640`. Cross-confirmed by a pre-existing repository document, `docs/PAPER_VERIFICATION.md:46`: "`data/honest_training_data_v2.csv` = 131 rows (132 lines incl. header), 18 columns, with `data_quality` = `real_sar` (77 rows) / `pre_sentinel1` (54 rows)."
+**[data/honest_training_data_v2.csv](../data/honest_training_data_v2.csv)** — confirmed by direct read: 131 rows, columns `date, flood_label, source, VV, VH, vv_vh_ratio, rainfall, soil_moisture, temp, wind, slope, twi, forecast_rain_next_12h, ndwi, upstream_vv, forecast_rain_72h, data_quality, temp_anomaly`; `data_quality` value counts `real_sar: 77`, `pre_sentinel1: 54`. This is the file loaded at `eval/run_paper_results.py:640`. Cross-confirmed by a pre-existing repository document, `docs/PAPER_VERIFICATION.md:46`: "`data/honest_training_data_v2.csv` = 131 rows (132 lines incl. header), 18 columns, with `data_quality` = `real_sar` (77 rows) / `pre_sentinel1` (54 rows)."
 
 No other file in the repository lists 131 events: the `dib_export/*.csv` exports and `results/loocv_predictions.csv` all contain 77 rows (real-SAR subset only); `data/honest_training_data.csv` and `data/real_training_data_v3.csv` contain 101 rows; `data/real_training_data_v2.csv` contains 40 rows.

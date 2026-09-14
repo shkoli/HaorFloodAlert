@@ -61,7 +61,7 @@ There is no automatic path from a computed flood probability to a sent alert any
 - `data/` — training and validation CSVs, and the live-run validation log (`daily_validation_log.csv`, see `data/README_validation_log.md` for its schema)
 - `models/` — saved model artifacts (RF, XGBoost, active feature list, LSTM); the LSTM files are kept only because the exploratory Prediction page loads them — they are excluded from all published results
 - `results/` — evaluation outputs, reports, and figures
-- `docs/` — the paper draft, a verification audit of its numbers, and extracted model-info notes
+- `docs/` — the paper draft, extracted model-info notes, and two September 2026 audit records (`PAPER_VERIFICATION.md`, `CODE_AUDIT.md`) documenting discrepancies found between the paper and the code, and the corrections made in response
 - `legacy/` — historical development scripts (early training/data-collection/figure-generation code, plus the excluded LSTM's own artifacts in `legacy/lstm/`) — not used by the paper's evaluation or the live app; see `legacy/README.md`
 
 ## Data sources

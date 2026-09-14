@@ -1,5 +1,7 @@
 # Paper Verification Report — HaorFloodAlert
 
+> **What this document is.** A read-only verification pass carried out in September 2026 while preparing the camera-ready version of the paper for IEEE COMPAS 2026. It checks specific numeric claims made in the paper against the actual code, saved model artifacts, and output files, and records where they matched, where they didn't, and where a claim could not be located at all. Where it found a mismatch, the paper text and this repository's `README.md` have since been corrected to match what the code verifiably produces. It is kept here as the record of that verification, for transparency, not as a list of unresolved issues. Several scripts cited below were subsequently moved to `legacy/` during a later repository cleanup; the paths below are left as they were at audit time and are not all still valid.
+
 Verified against actual code, saved models, and output files in this repository.
 Method: direct file reads, grep, and live execution of pickled/joblib models (read-only).
 Where a script produces a number only as a hardcoded literal (used to draw a figure) rather
