@@ -91,3 +91,16 @@ date,time,flood_probability,risk_level,sw269_water_level,forecast_rain_72h,soil_
 2026-08-30,22:06,0.6327,HIGH,5.93,74.0,30.0,1404.0,6.05,12 cm below danger level
 2026-08-31,08:00,0.6883,HIGH,5.93,53.4,30.0,1397.6,6.05,12 cm below danger level
 2026-09-01,10:04,0.5941,HIGH,6.0,68.4,30.0,1392.2,6.05,5 cm below danger level
+2026-09-02,08:00,0.5934,HIGH,5.79,65.5,30.0,1392.2,6.05,26 cm below danger level
+2026-09-03,10:37,0.7057,CRITICAL,6.05,65.1,30.0,1402.9,6.05,at danger level
+2026-09-04,11:42,0.7309,CRITICAL,5.84,67.8,30.0,1414.8,6.05,21 cm below danger level
+2026-09-05,19:37,0.6325,HIGH,5.84,76.6,30.0,1418.1,6.05,21 cm below danger level
+2026-09-05,21:28,0.6325,HIGH,5.84,75.9,30.0,1418.1,6.05,21 cm below danger level
+2026-09-06,10:54,0.7222,CRITICAL,5.84,81.8,30.0,1417.0,6.05,21 cm below danger level
+2026-09-07,22:07,0.7565,CRITICAL,5.77,69.5,30.0,1407.3,6.05,28 cm below danger level
+2026-09-08,09:17,0.8251,CRITICAL,5.77,32.5,30.0,1395.4,6.05,28 cm below danger level
+2026-09-09,19:18,0.95,CRITICAL,5.64,38.7,40.8,1380.5,6.05,41 cm below danger level
+2026-09-11,08:00,0.8127,CRITICAL,5.68,21.4,30.0,1353.2,6.05,37 cm below danger level
+2026-09-12,09:14,0.7625,CRITICAL,5.52,49.5,30.0,1337.7,6.05,53 cm below danger level
+2026-09-13,10:10,0.4068,MODERATE,5.68,18.8,30.0,1318.4,6.05,37 cm below danger level
+2026-09-14,09:46,0.3652,MODERATE,5.52,29.2,30.0,1301.2,6.05,53 cm below danger level
