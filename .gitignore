@@ -27,3 +27,6 @@ logger_output.txt
 dib_export.zip
 dib_export/
 thesis_screenshots/
+
+# Unrelated personal file swept in accidentally (kept on disk, not part of the repo)
+Toady/
