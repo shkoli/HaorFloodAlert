@@ -13,6 +13,13 @@ Accepted at **IEEE COMPAS 2026**, University of Dhaka, 9–10 October 2026 (Pape
 
 Preprint: arXiv:2605.20167 (a v2 update is pending).
 
+## Authors
+
+Salma Hoque Talukdar Koli — RTM Al-Kabir Technical University, Sylhet (corresponding)  
+Fahima Haque Talukder Jely — North East University Bangladesh, Sylhet  
+Md. Samiul Alim — RTM Al-Kabir Technical University, Sylhet  
+Md. Zakir Hossen — Dhaka University of Engineering & Technology, Gazipur
+
 ## Results
 
 Source: `analysis_v2/results/loocv_perfold_stds_summary.txt`, `analysis_v2/results/loyo_summary.txt`.
